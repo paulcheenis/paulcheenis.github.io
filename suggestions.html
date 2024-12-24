@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>sketches</title>
+    <title>suggestions</title>
     <link rel="icon" type="image/x-icon" href="favicon.png">
     <link rel="stylesheet" href="cheenisstyle.css">
 </head>
@@ -23,8 +23,17 @@
     </div>
     <hr>
 
-    <p>first sketch tbd</p><br>
-
+    <div>
+    <h1>suggestion box</h1>
+    <p>feel free to leave some suggestions for any sketches or comics you would like to see</p>
+    <form action="thankyou.html" method="get" id="suggestionbox">
+        <label for="name">name</label><br>
+        <input type="text" id="name" name="name"><br>
+        <label for="message">message</label><br>
+        <textarea id="message" name="message" cols="80" rows="5" required></textarea><br>
+        <button type="submit" form="suggestionbox" value="Submit">submit</button>
+    </form>
+    </div>
 
 
 </body>
