@@ -1,16 +1,19 @@
 /* paulcheenis — personal site
-   paper, ink, one accent. sketches and pixels, nothing else. */
+   black, white, and the drawings. No hue in the interface at all: the only
+   colour on the site comes from the art, which is the point. */
 
 :root {
-  --paper: #f7f4ec;
-  --paper-2: #fffdf7;
-  --ink: #17161a;
-  --ink-soft: #4c4740;
-  --muted: #837c70;
-  --line: #e0d9c9;
-  --accent: #d9441a;
-  --accent-ink: #fff;
-  --shadow: 0 1px 2px rgba(23, 22, 26, .05), 0 8px 24px -12px rgba(23, 22, 26, .18);
+  /* strictly black and white: no hue anywhere in the interface. The only colour
+     on the site comes from the drawings themselves. */
+  --paper: #fafafa;
+  --paper-2: #ffffff;
+  --ink: #0a0a0a;
+  --ink-soft: #3c3c3c;
+  --muted: #767676;
+  --line: #e4e4e4;
+  --accent: #0a0a0a;
+  --accent-ink: #ffffff;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .04), 0 8px 24px -14px rgba(0, 0, 0, .16);
   --radius: 14px;
   --wrap: 1080px;
   --serif: Georgia, "Iowan Old Style", "Times New Roman", serif;
@@ -20,15 +23,15 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --paper: #121114;
-    --paper-2: #1a191d;
-    --ink: #efeae0;
-    --ink-soft: #c9c2b6;
-    --muted: #8d857a;
-    --line: #2c2a2f;
-    --accent: #ff6b3d;
-    --accent-ink: #1a0d07;
-    --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 10px 30px -18px rgba(0, 0, 0, .8);
+    --paper: #0c0c0c;
+    --paper-2: #151515;
+    --ink: #f4f4f4;
+    --ink-soft: #c8c8c8;
+    --muted: #8b8b8b;
+    --line: #2a2a2a;
+    --accent: #f4f4f4;
+    --accent-ink: #0c0c0c;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .5), 0 10px 30px -18px rgba(0, 0, 0, .9);
   }
 }
 
@@ -46,8 +49,8 @@ body {
 
 img { display: block; max-width: 100%; height: auto; }
 
-a { color: inherit; text-decoration-color: color-mix(in srgb, var(--accent) 55%, transparent); }
-a:hover { color: var(--accent); }
+a { color: inherit; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+a:hover { text-decoration-thickness: 2px; }
 
 ::selection { background: var(--accent); color: var(--accent-ink); }
 
@@ -102,14 +105,19 @@ a:hover { color: var(--accent); }
   transition: background .15s ease, color .15s ease;
 }
 .nav a:hover { background: color-mix(in srgb, var(--ink) 7%, transparent); color: var(--ink); }
-.nav a[aria-current="page"] { color: var(--accent); font-weight: 600; }
+.nav a[aria-current="page"] {
+  background: var(--ink);
+  color: var(--paper-2);
+  font-weight: 600;
+}
+.nav a[aria-current="page"]:hover { background: var(--ink); color: var(--paper-2); }
 
 /* ---------- type ---------- */
 
 .kicker {
   font-family: var(--hand);
   font-size: 15px;
-  color: var(--accent);
+  color: var(--ink);
   margin: 0 0 6px;
 }
 
@@ -190,7 +198,7 @@ h3 { font-size: 1.1rem; margin: 0 0 4px; }
   text-decoration: none;
   border-bottom: 1px dashed var(--line);
 }
-.section-head .more:hover { color: var(--accent); border-color: var(--accent); }
+.section-head .more:hover { color: var(--ink); border-color: var(--ink); }
 
 /* ---------- comic cards ---------- */
 
@@ -350,8 +358,8 @@ h3 { font-size: 1.1rem; margin: 0 0 4px; }
   z-index: 100;
   display: grid;
   grid-template-rows: auto 1fr auto;
-  background: rgba(12, 11, 13, .94);
-  color: #f5f1e8;
+  background: rgba(0, 0, 0, .95);
+  color: #ffffff;
   padding: 14px;
   opacity: 0;
   pointer-events: none;
@@ -364,7 +372,7 @@ h3 { font-size: 1.1rem; margin: 0 0 4px; }
   align-items: center;
   gap: 12px;
   font: 500 13px/1 var(--sans);
-  color: #b9b2a6;
+  color: #bdbdbd;
 }
 .lightbox__bar span { margin-right: auto; }
 
@@ -405,7 +413,7 @@ h3 { font-size: 1.1rem; margin: 0 0 4px; }
 }
 .site-foot .wrap { display: flex; gap: 14px; flex-wrap: wrap; align-items: baseline; }
 .site-foot a { color: var(--ink-soft); }
-.site-foot .hand { font-family: var(--hand); color: var(--accent); font-size: 14px; margin-left: auto; }
+.site-foot .hand { font-family: var(--hand); color: var(--ink-soft); font-size: 14px; margin-left: auto; }
 
 /* ---------- motion ---------- */
 

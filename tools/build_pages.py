@@ -63,7 +63,8 @@ HEAD = """<!doctype html>
 <meta property="og:description" content="{desc}">
 <meta property="og:type" content="website">
 <meta property="og:image" content="Assets/{og}">
-<meta name="theme-color" content="#f7f4ec">
+<meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0c0c0c" media="(prefers-color-scheme: dark)">
 <link rel="icon" type="image/png" href="Assets/favicon.png">
 <link rel="stylesheet" href="style.css">
 </head>
