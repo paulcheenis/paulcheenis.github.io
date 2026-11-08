@@ -1,35 +1,55 @@
-<html>
-<!DOCTYPE html>
-<html lang="en-us">
+<!doctype html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>about page</title>
-    <link rel="icon" type="image/x-icon" href="Assets/favicon.png">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>about</title>
-    <link rel="icon" type="image/x-icon" href="favicon.png">
-    <link rel="stylesheet" href="cheenisstyle.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>about — paulcheenis</title>
+<meta name="description" content="Who makes this and why.">
+<meta property="og:title" content="about — paulcheenis">
+<meta property="og:description" content="Who makes this and why.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="Assets/12032024.png">
+<meta name="theme-color" content="#f7f4ec">
+<link rel="icon" type="image/png" href="Assets/favicon.png">
+<link rel="stylesheet" href="style.css">
 </head>
-
-
 <body>
-    <div>
-        <img src="Assets/paid4winrar.png" class="center" width="300px">
-        <p>comics and shit</p><br>
-        <a href="index.html">home</a> <span>|</span>
-        <a href="about.html">about</a> <span>|</span>
-        <a href="comics.html">comics</a> <span>|</span>
-        <a href="sketch.html">sketches</a> <span>|</span>
-        <a href="projects.html">projects</a> <span>|</span>
-        <a href="suggestions.html">suggestions</a> <span>|</span>          
+<a class="skip" href="#main" style="position:absolute;left:-9999px">skip to content</a>
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="index.html">paul<b>cheenis</b><span class="dot">.</span></a>
+    <nav class="nav" aria-label="main"><a href="index.html">home</a><a href="comics.html">comics</a><a href="pictures.html">pictures</a><a href="sketch.html">sketches</a><a href="about.html" aria-current="page">about</a><a href="suggestions.html">suggestions</a></nav>
+  </div>
+</header>
+<main id="main">
+  <section class="page-head wrap">
+    <p class="kicker">hello</p>
+    <h1>About</h1>
+  </section>
+
+  <section class="section wrap">
+    <div class="panel">
+      <p>This is my personal website, where I practise drawing and slowly get better
+         at building things on the internet.</p>
+      <p>I post comics when one is finished and pictures when I like them enough.
+         There is no posting schedule and there never will be.</p>
+      <p>Everything here is drawn by me. The site is a pile of HTML files, a stylesheet
+         and one small script — no framework, no build step, no cookies.</p>
+      <p>If you want to see something drawn, there's a
+         <a href="suggestions.html">suggestion box</a>.</p>
     </div>
-    <hr>
-
-    <p>this is my personal website in which i am practicing my art and computer skills</p><br>
-    <p>i hope you find my drawings amusing</p>
-
-
+  </section>
+</main>
+<footer class="site-foot">
+  <div class="wrap">
+    <span>© <span data-year>2025</span> paulcheenis</span>
+    <span>·</span>
+    <a href="comics.html">comics</a>
+    <a href="pictures.html">pictures</a>
+    <a href="suggestions.html">suggestions</a>
+    <span class="hand">hand-made, badly hosted, worth it</span>
+  </div>
+</footer>
+<script src="script.js"></script>
 </body>
 </html>

@@ -1,40 +1,58 @@
-<html>
-<!DOCTYPE html>
-<html lang="en-us">
+<!doctype html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>suggestions</title>
-    <link rel="icon" type="image/x-icon" href="favicon.png">
-    <link rel="stylesheet" href="cheenisstyle.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>suggestions — paulcheenis</title>
+<meta name="description" content="Leave an idea for a comic or sketch.">
+<meta property="og:title" content="suggestions — paulcheenis">
+<meta property="og:description" content="Leave an idea for a comic or sketch.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="Assets/12032024.png">
+<meta name="theme-color" content="#f7f4ec">
+<link rel="icon" type="image/png" href="Assets/favicon.png">
+<link rel="stylesheet" href="style.css">
 </head>
-
-
 <body>
-    <div>
-        <img src="Assets/paid4winrar.png" class="center" width="300px">
-        <p>comics and shit</p><br>
-        <a href="index.html">home</a> <span>|</span>
-        <a href="about.html">about</a> <span>|</span>
-        <a href="comics.html">comics</a> <span>|</span>
-        <a href="sketch.html">sketches</a> <span>|</span>
-        <a href="projects.html">projects</a> <span>|</span>
-        <a href="suggestions.html">suggestions</a> <span>|</span>          
-    </div>
-    <hr>
+<a class="skip" href="#main" style="position:absolute;left:-9999px">skip to content</a>
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="index.html">paul<b>cheenis</b><span class="dot">.</span></a>
+    <nav class="nav" aria-label="main"><a href="index.html">home</a><a href="comics.html">comics</a><a href="pictures.html">pictures</a><a href="sketch.html">sketches</a><a href="about.html">about</a><a href="suggestions.html" aria-current="page">suggestions</a></nav>
+  </div>
+</header>
+<main id="main">
+  <section class="page-head wrap">
+    <p class="kicker">tell me what to draw</p>
+    <h1>Suggestion box</h1>
+    <p class="lede">Leave an idea for a comic or a sketch. If it's good — or strange
+       enough — it might get drawn.</p>
+  </section>
 
-    <div>
-    <h1>suggestion box</h1>
-    <p>feel free to leave some suggestions for any sketches or comics you would like to see</p>
-    <form action="thankyou.html" method="get" id="suggestionbox">
-        <label for="name">name</label><br>
-        <input type="text" id="name" name="name"><br>
-        <label for="message">message</label><br>
-        <textarea id="message" name="message" cols="80" rows="5" required></textarea><br>
-        <button type="submit" form="suggestionbox" value="Submit">submit</button>
+  <section class="section wrap">
+    <form class="panel form" action="thankyou.html" method="get">
+      <div class="field">
+        <label for="name">name (or leave it blank)</label>
+        <input id="name" name="name" type="text" autocomplete="nickname" placeholder="who's asking">
+      </div>
+      <div class="field">
+        <label for="idea">your idea</label>
+        <textarea id="idea" name="idea" placeholder="a guy who..."></textarea>
+      </div>
+      <button class="btn btn--primary" type="submit">send it →</button>
     </form>
-    </div>
-
-
+  </section>
+</main>
+<footer class="site-foot">
+  <div class="wrap">
+    <span>© <span data-year>2025</span> paulcheenis</span>
+    <span>·</span>
+    <a href="comics.html">comics</a>
+    <a href="pictures.html">pictures</a>
+    <a href="suggestions.html">suggestions</a>
+    <span class="hand">hand-made, badly hosted, worth it</span>
+  </div>
+</footer>
+<script src="script.js"></script>
 </body>
 </html>

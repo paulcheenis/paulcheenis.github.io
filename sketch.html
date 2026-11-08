@@ -1,38 +1,66 @@
-<html>
-<!DOCTYPE html>
-<html lang="en-us">
+<!doctype html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>sketches</title>
-    <link rel="icon" type="image/x-icon" href="Assets/favicon.png">
-    <link rel="stylesheet" href="cheenisstyle.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>sketches — paulcheenis</title>
+<meta name="description" content="Sketches and loose drawings.">
+<meta property="og:title" content="sketches — paulcheenis">
+<meta property="og:description" content="Sketches and loose drawings.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="Assets/12032024.png">
+<meta name="theme-color" content="#f7f4ec">
+<link rel="icon" type="image/png" href="Assets/favicon.png">
+<link rel="stylesheet" href="style.css">
 </head>
-
-
 <body>
-    <div>
-        <img src="Assets/paid4winrar.png" class="center" width="300px">
-        <p>comics and shit</p><br>
-        <a href="index.html">home</a> <span>|</span>
-        <a href="about.html">about</a> <span>|</span>
-        <a href="comics.html">comics</a> <span>|</span>
-        <a href="sketch.html">sketches</a> <span>|</span>
-        <a href="projects.html">projects</a> <span>|</span>
-        <a href="suggestions.html">suggestions</a> <span>|</span>          
+<a class="skip" href="#main" style="position:absolute;left:-9999px">skip to content</a>
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="index.html">paul<b>cheenis</b><span class="dot">.</span></a>
+    <nav class="nav" aria-label="main"><a href="index.html">home</a><a href="comics.html">comics</a><a href="pictures.html">pictures</a><a href="sketch.html" aria-current="page">sketches</a><a href="about.html">about</a><a href="suggestions.html">suggestions</a></nav>
+  </div>
+</header>
+<main id="main">
+  <section class="page-head wrap">
+    <p class="kicker">sketches</p>
+    <h1>Sketches</h1>
+    <p class="lede">The looser stuff — pencil, gifs, things that never became a comic.</p>
+  </section>
+
+  <section class="section wrap">
+    <div class="gallery">
+      <figure class="tile">
+        <a href="Assets/sketch1.png" data-zoom="Assets/sketch1.png" data-label="pencil portrait">
+          <img src="Assets/sketch1.png" alt="Pencil portrait" loading="lazy" decoding="async">
+        </a>
+        <figcaption><b>pencil portrait</b>Drawn by hand. 2025.</figcaption>
+      </figure>
+      <figure class="tile">
+        <a href="Assets/danke.gif" data-zoom="Assets/danke.gif" data-label="danke.gif">
+          <img src="Assets/danke.gif" alt="Animated sketch" loading="lazy" decoding="async">
+        </a>
+        <figcaption><b>danke.gif</b>An animated thank-you.</figcaption>
+      </figure>
+      <figure class="tile">
+        <a href="Assets/11092024.png" data-zoom="Assets/11092024.png" data-label="comic, 11/09/2024">
+          <img src="Assets/11092024.png" alt="Comic from 11/09/2024" loading="lazy" decoding="async">
+        </a>
+        <figcaption><b>from the comic pile</b>11/09/2024, pencil and no patience.</figcaption>
+      </figure>
     </div>
-    <hr>
-    <div>
-        <h2 id="gif1">10/17/2025</h2>
-        <img src="Assets/danke.gif" class="center" height="600px" width="600px" alt="insert gif here"><br>
-    </div>
-
-    <div>
-        <h2 id="sketch1">10/05/2025</h2>
-        <img src="Assets/sketch1.png" height="600px" width="600px" alt="insert sketch here"><br>
-    </div>
-
-
-
+  </section>
+</main>
+<footer class="site-foot">
+  <div class="wrap">
+    <span>© <span data-year>2025</span> paulcheenis</span>
+    <span>·</span>
+    <a href="comics.html">comics</a>
+    <a href="pictures.html">pictures</a>
+    <a href="suggestions.html">suggestions</a>
+    <span class="hand">hand-made, badly hosted, worth it</span>
+  </div>
+</footer>
+<script src="script.js"></script>
 </body>
 </html>
