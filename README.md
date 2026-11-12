@@ -16,9 +16,17 @@ style.css         one stylesheet, light + dark from prefers-color-scheme
 script.js         lightbox (arrow keys, Esc) — the only JavaScript on the site
 Assets/           every image, unchanged file names
 tools/build_pages.py  regenerates the HTML from the lists at the top
+tools/sync_instagram.py  mirrors the newest instagram posts (see INSTAGRAM.md)
+.github/workflows/instagram-sync.yml  runs that every six hours
 ```
 
 No framework, no build step at serve time, no cookies, no tracking.
+
+## Instagram
+
+Pictures posted to [@paid4winrar](https://www.instagram.com/paid4winrar/) copy
+themselves into `pictures.html` every six hours. `INSTAGRAM.md` has the setup, and
+the four steps only you can do (Creator account, Meta app, token, repo secret).
 
 ## Adding a comic
 

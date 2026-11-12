@@ -12,6 +12,7 @@ Assets/, then run the script again.
 from __future__ import annotations
 
 import html
+import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -51,6 +52,50 @@ PICTURES = [
     ("paid4winrar.png", "paid for winrar", "The banner the old site was built around.", "wide"),
     ("paulcheenis.png", "the name", "Six hundred pixels of enthusiasm.", "wide"),
 ]
+
+# Posts mirrored from Instagram live in their own file, written by
+# tools/sync_instagram.py. Kept apart so a sync never edits this one.
+IG_STORE = ROOT / "tools" / "instagram.json"
+
+
+def ig_title(caption: str) -> str:
+    first = (caption.splitlines() or [""])[0].strip()
+    if not first:
+        return "from instagram"
+    if len(first) <= 42:
+        return first
+    cut = first[:42].rsplit(" ", 1)[0]
+    return cut.rstrip(",.;:") + "…"
+
+
+def ig_caption(post: dict) -> str:
+    lines = [ln.strip() for ln in (post.get("caption") or "").splitlines() if ln.strip()]
+    rest = " ".join(lines[1:])
+    if not rest:
+        return "an instagram post"
+    return rest if len(rest) <= 140 else rest[:140].rsplit(" ", 1)[0] + "…"
+
+
+def instagram_pictures() -> list[tuple]:
+    """(file, title, caption, shape, permalink) newest first, or nothing."""
+    if not IG_STORE.exists():
+        return []
+    try:
+        posts = json.loads(IG_STORE.read_text(encoding="utf-8")).get("posts", [])
+    except json.JSONDecodeError:
+        print("tools/instagram.json is not valid JSON, ignoring it")
+        return []
+    out = []
+    for post in posts:
+        if not post.get("file"):
+            continue
+        out.append((post["file"], ig_title(post.get("caption", "")),
+                    ig_caption(post), "square", post.get("permalink", "")))
+    return out
+
+
+IG_PICTURES = instagram_pictures()
+ALL_PICTURES = IG_PICTURES + PICTURES
 
 HEAD = """<!doctype html>
 <html lang="en">
@@ -137,13 +182,16 @@ def comic_block(c: tuple, wide: bool = False) -> str:
 
 
 def tile(pic: tuple) -> str:
-    img, name, caption, shape = pic
+    img, name, caption, shape = pic[:4]
+    permalink = pic[4] if len(pic) > 4 else ""
     cls = f"tile tile--{shape}" if shape != "square" else "tile"
+    source = (f' <a class="tile__src" href="{esc(permalink)}" rel="noopener">'
+              f'instagram</a>' if permalink else "")
     return f"""    <figure class="{cls}">
       <a href="{url(img)}" data-zoom="{url(img)}" data-label="{esc(name)}">
         <img src="{url(img)}" alt="{esc(name)}" loading="lazy" decoding="async">
       </a>
-      <figcaption><b>{esc(name)}</b>{esc(caption)}</figcaption>
+      <figcaption><b>{esc(name)}</b>{esc(caption)}{source}</figcaption>
     </figure>"""
 
 
@@ -191,7 +239,7 @@ def build_index() -> None:
       <a class="more" href="pictures.html">everything →</a>
     </div>
     <div class="gallery">
-{chr(10).join(tile(p) for p in PICTURES)}
+{chr(10).join(tile(p) for p in ALL_PICTURES[:6])}
     </div>
   </section>
 """
@@ -220,12 +268,13 @@ def build_pictures() -> None:
     body = f"""  <section class="page-head wrap">
     <p class="kicker">offcuts</p>
     <h1>Pictures</h1>
-    <p class="lede">Things that aren't a comic. Click one to open it.</p>
+    <p class="lede">Things that aren't a comic. Click one to open it.
+    The instagram ones put themselves here.</p>
   </section>
 
   <section class="section wrap">
     <div class="gallery">
-{chr(10).join(tile(p) for p in PICTURES)}
+{chr(10).join(tile(p) for p in ALL_PICTURES)}
     </div>
   </section>
 """

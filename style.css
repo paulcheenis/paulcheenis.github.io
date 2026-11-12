@@ -305,6 +305,16 @@ h3 { font-size: 1.1rem; margin: 0 0 4px; }
 }
 .tile figcaption b { color: var(--ink); font-weight: 600; display: block; font-size: 14px; }
 
+/* the "instagram" link under a mirrored post: ink and an underline, no colour */
+.tile figcaption .tile__src {
+  display: inline-block;
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 /* ---------- prose pages ---------- */
 
 .panel {

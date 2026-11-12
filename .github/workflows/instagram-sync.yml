@@ -1,0 +1,46 @@
+name: instagram sync
+
+on:
+  schedule:
+    # every six hours, a few minutes past the hour so it is not in the rush
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: instagram-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # only needed for the optional step that puts a refreshed token back
+      - name: Install PyNaCl
+        run: pip install --disable-pip-version-check pynacl
+
+      - name: Pull new posts, rebuild the pages
+        env:
+          IG_TOKEN: ${{ secrets.IG_TOKEN }}
+          GH_SECRETS_PAT: ${{ secrets.GH_SECRETS_PAT }}
+        run: python tools/sync_instagram.py
+
+      - name: Commit anything new
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "nothing new"
+            exit 0
+          fi
+          git config user.name  "instagram sync"
+          git config user.email "sync@paidforwinrar.com"
+          git add -A
+          git commit -m "Sync the newest instagram posts"
+          git push
