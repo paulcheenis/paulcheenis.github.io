@@ -52,6 +52,24 @@ gets an error, prints "token refresh skipped" and carries on with the token.
 
 Then: Actions → **instagram sync** → Run workflow. First run puts everything up.
 
+## Where a post lands
+
+`tools/instagram_medium.json` decides that, and it is the only file to edit:
+
+```json
+{
+  "sketch": ["17924915496205795", "17925620208428310"],
+  "digital": ["18013443776989984"]
+}
+```
+
+Sketch means paper: pencil, ballpoint, ink, photographed notebook pages. Those go
+to `sketch.html`. Digital goes to `pictures.html`. A post that is in neither list
+is treated as a sketch, since that is most of the account.
+
+Every mirrored post is in there already. To move one, move its id between the two
+lists and rerun `py tools/build_pages.py`.
+
 ## What the sync does
 
 `tools/sync_instagram.py`:
