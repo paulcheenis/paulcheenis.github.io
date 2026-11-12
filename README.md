@@ -25,8 +25,9 @@ No framework, no build step at serve time, no cookies, no tracking.
 ## Instagram
 
 Pictures posted to [@paid4winrar](https://www.instagram.com/paid4winrar/) copy
-themselves into `pictures.html` every six hours. `INSTAGRAM.md` has the setup, and
-the four steps only you can do (Creator account, Meta app, token, repo secret).
+themselves onto the site every six hours: pencil and ink pages onto `sketch.html`,
+digital work onto `pictures.html`. `INSTAGRAM.md` has the setup and the one file
+that decides which page a post goes to.
 
 ## Adding a comic
 
