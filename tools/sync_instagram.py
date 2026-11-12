@@ -133,9 +133,9 @@ def store_secret(name: str, value: str) -> None:
 
 
 # ------------------------------------------------------------------ media
-def fetch_media(token: str) -> list[dict]:
+def fetch_media(base: str, target: str, token: str) -> list[dict]:
     out: list[dict] = []
-    url = (f"{API}/me/media?fields={urllib.parse.quote(FIELDS)}"
+    url = (f"{base}/{target}/media?fields={urllib.parse.quote(FIELDS)}"
            f"&limit=50&access_token={urllib.parse.quote(token)}")
     for _ in range(MAX_PAGES):
         page = get_json(url)
@@ -144,6 +144,54 @@ def fetch_media(token: str) -> list[dict]:
         if not url:
             break
     return out
+
+
+def try_get(url: str, token: str) -> tuple[int, str]:
+    sep = "&" if "?" in url else "?"
+    try:
+        raw = http(f"{url}{sep}access_token={urllib.parse.quote(token)}", tries=1)
+        return 200, raw.decode("utf-8", "replace")
+    except SystemExit as e:
+        return 0, str(e)
+
+
+def resolve_target(token: str) -> tuple[str, str]:
+    """Find the Graph host and the account id this token can read.
+
+    A token minted by 'API setup with Unified login' is a Facebook system user
+    token: graph.instagram.com will not parse it. Older Instagram-login tokens
+    only work on graph.instagram.com. Try both, then look for the business
+    account behind the system user.
+    """
+    base = "https://graph.facebook.com/v23.0"
+    notes: list[str] = []
+
+    for host in ("https://graph.instagram.com/v23.0", base):
+        status, body = try_get(f"{host}/me?fields=id,username", token)
+        if status == 200:
+            data = json.loads(body)
+            if data.get("username"):
+                print(f"token reads {host} as @{data['username']}")
+                return host, data["id"]
+        notes.append(f"{host}/me -> {status} {body[:160]}")
+
+    business_id = os.environ.get("IG_BUSINESS_ID", "1767727650988025").strip()
+    for path in ("/me/accounts?fields=instagram_business_account{id,username}",
+                 f"/{business_id}/instagram_accounts?fields=id,username",
+                 "/me/assigned_instagram_accounts?fields=id,username"):
+        status, body = try_get(base + path, token)
+        notes.append(f"{base}{path} -> {status} {body[:160]}")
+        if status != 200:
+            continue
+        data = json.loads(body).get("data", [])
+        for row in data:
+            ig = row.get("instagram_business_account") or row
+            if ig.get("id"):
+                print(f"token reads {base} as Instagram account {ig.get('username') or ig['id']}")
+                return base, ig["id"]
+
+    die("could not find an Instagram account with this token:\n  " + "\n  ".join(notes))
+    raise SystemExit(1)
 
 
 def pick_image(item: dict) -> tuple[str, str] | None:
@@ -294,11 +342,16 @@ def main() -> None:
               "INSTAGRAM.md has the four steps that create one; the site is untouched.")
         return
 
-    token, seconds = refresh_token(token)
-    if seconds:
-        print(f"token refreshed, {seconds / 86400:.0f} days left on it")
+    base, target = resolve_target(token)
 
-    items = fetch_media(token)
+    if "graph.instagram.com" in base:
+        token, seconds = refresh_token(token)
+        if seconds:
+            print(f"token refreshed, {seconds / 86400:.0f} days left on it")
+    else:
+        seconds = 0
+
+    items = fetch_media(base, target, token)
     print(f"{len(items)} posts from Instagram")
     new = sync(items, read_store())
     rebuild()
