@@ -68,11 +68,26 @@ def ig_title(caption: str) -> str:
     return cut.rstrip(",.;:") + "…"
 
 
+MONTHS = "Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec".split()
+
+
+def ig_date(post: dict) -> str:
+    stamp = (post.get("timestamp") or "")[:10]
+    try:
+        year, month, day = stamp.split("-")
+        return f"{int(day)} {MONTHS[int(month) - 1]} {year}"
+    except (ValueError, IndexError):
+        return "instagram"
+
+
 def ig_caption(post: dict) -> str:
     lines = [ln.strip() for ln in (post.get("caption") or "").splitlines() if ln.strip()]
-    rest = " ".join(lines[1:])
+    title = ig_title(post.get("caption", ""))
+    rest = " ".join(lines[1:]) if len(lines) > 1 else ""
+    if not rest and lines and lines[0] != title:
+        rest = lines[0]
     if not rest:
-        return "an instagram post"
+        return f"posted {ig_date(post)}"
     return rest if len(rest) <= 140 else rest[:140].rsplit(" ", 1)[0] + "…"
 
 
