@@ -56,6 +56,28 @@ PICTURES = [
 # Posts mirrored from Instagram live in their own file, written by
 # tools/sync_instagram.py. Kept apart so a sync never edits this one.
 IG_STORE = ROOT / "tools" / "instagram.json"
+IG_MEDIUM = ROOT / "tools" / "instagram_medium.json"
+
+
+def ig_media() -> dict[str, str]:
+    """Which page each mirrored post belongs on.
+
+    tools/instagram_medium.json holds two lists of post ids: "sketch" for paper
+    and ink, "digital" for work drawn on a screen. A post nobody has filed yet
+    goes to sketches, since that is what most of the account is.
+    """
+    mapping: dict[str, str] = {}
+    if not IG_MEDIUM.exists():
+        return mapping
+    try:
+        data = json.loads(IG_MEDIUM.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        print("tools/instagram_medium.json is not valid JSON, treating all as sketches")
+        return mapping
+    for medium in ("sketch", "digital"):
+        for post_id in data.get(medium, []):
+            mapping[str(post_id)] = medium
+    return mapping
 
 
 def ig_title(caption: str) -> str:
@@ -91,26 +113,32 @@ def ig_caption(post: dict) -> str:
     return rest if len(rest) <= 140 else rest[:140].rsplit(" ", 1)[0] + "…"
 
 
-def instagram_pictures() -> list[tuple]:
-    """(file, title, caption, shape, permalink) newest first, or nothing."""
+def instagram_pictures() -> tuple[list[tuple], list[tuple]]:
+    """(sketches, digital) as (file, title, caption, shape, permalink), newest first."""
     if not IG_STORE.exists():
-        return []
+        return [], []
     try:
         posts = json.loads(IG_STORE.read_text(encoding="utf-8")).get("posts", [])
     except json.JSONDecodeError:
         print("tools/instagram.json is not valid JSON, ignoring it")
-        return []
-    out = []
+        return [], []
+    media = ig_media()
+    sketches: list[tuple] = []
+    digital: list[tuple] = []
     for post in posts:
         if not post.get("file"):
             continue
-        out.append((post["file"], ig_title(post.get("caption", "")),
-                    ig_caption(post), "square", post.get("permalink", "")))
-    return out
+        entry = (post["file"], ig_title(post.get("caption", "")),
+                 ig_caption(post), "square", post.get("permalink", ""))
+        if media.get(str(post.get("id")), "sketch") == "digital":
+            digital.append(entry)
+        else:
+            sketches.append(entry)
+    return sketches, digital
 
 
-IG_PICTURES = instagram_pictures()
-ALL_PICTURES = IG_PICTURES + PICTURES
+IG_SKETCHES, IG_DIGITAL = instagram_pictures()
+ALL_PICTURES = IG_DIGITAL + PICTURES
 
 HEAD = """<!doctype html>
 <html lang="en">
@@ -298,10 +326,11 @@ def build_pictures() -> None:
 
 
 def build_sketch() -> None:
-    body = """  <section class="page-head wrap">
+    body = f"""  <section class="page-head wrap">
     <p class="kicker">sketches</p>
     <h1>Sketches</h1>
-    <p class="lede">The looser stuff — pencil, gifs, things that never became a comic.</p>
+    <p class="lede">The looser stuff — pencil, gifs, things that never became a comic.
+    The notebook pages from instagram land here too.</p>
   </section>
 
   <section class="section wrap">
@@ -324,6 +353,7 @@ def build_sketch() -> None:
         </a>
         <figcaption><b>from the comic pile</b>11/09/2024, pencil and no patience.</figcaption>
       </figure>
+{chr(10).join(tile(p) for p in IG_SKETCHES)}
     </div>
   </section>
 """
