@@ -35,12 +35,14 @@ jobs:
 
       - name: Commit anything new
         run: |
+          git config user.name  "instagram sync"
+          git config user.email "sync@paidforwinrar.com"
           if [ -z "$(git status --porcelain)" ]; then
             echo "nothing new"
             exit 0
           fi
-          git config user.name  "instagram sync"
-          git config user.email "sync@paidforwinrar.com"
           git add -A
           git commit -m "Sync the newest instagram posts"
-          git push
+          # the branch can move between checkout and push, so rebase first
+          git pull --rebase --autostash origin main || true
+          git push origin HEAD:main
