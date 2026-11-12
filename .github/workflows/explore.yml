@@ -1,0 +1,17 @@
+name: explore api
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  explore:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Read-only tour of the token's reach
+        env:
+          IG_TOKEN: ${{ secrets.IG_TOKEN }}
+        run: python tools/explore_api.py
