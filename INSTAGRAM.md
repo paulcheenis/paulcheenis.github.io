@@ -23,34 +23,32 @@ accounts. The old personal-account API was switched off in December 2024.
 ### 2. Create the Meta app
 
 developer.facebook.com → My Apps → Create app. Pick **Other**, then add the
-**Instagram** product and choose **Instagram API with Instagram login**. No
-Facebook Page is needed.
+**Instagram** use case (Meta calls it "Instagram API"). No Facebook Page is needed.
 
-### 3. Get a long-lived token
+### 3. Get a token
 
-In the app dashboard, under Instagram → API setup with Instagram login:
+Newer apps get **API setup with Unified login**, not "with Instagram login",
+which Meta no longer offers to new apps. In the App Dashboard:
 
-1. Add @paid4winrar to **Instagram testers** (App roles).
-2. Accept the tester invite in the Instagram app: Settings → Website permissions →
-   Apps and websites.
-3. Generate an access token. That one lasts an hour, so exchange it for a
-   long-lived one on your own machine:
-
-```bash
-curl "https://graph.instagram.com/access_token?grant_type=ig_exchange_token&client_secret=APP_SECRET&access_token=SHORT_LIVED_TOKEN"
-```
-
-The reply has `access_token` and `expires_in`: 5184000 seconds, 60 days.
+1. **Use cases → Instagram API → API setup with Unified login.**
+2. A **business portfolio** is mandatory here. Create or link one, then reload
+   the page (a one-time thing, done for this app already).
+3. **1. Configure your app** → **Create new configuration** → keep the template
+   ("Instagram API (Unified Login)") → **Create from template**. The token becomes
+   a system-user token that **never expires**.
+4. Section 2 → **Add account**, or add the account by hand: **App roles → Roles →
+   Instagram testers → Add people** with the username, then accept the invite in
+   the Instagram app (Settings → Website permissions → Apps and websites).
+5. **Generate token** next to the account. That string is `IG_TOKEN`.
 
 ### 4. Put it in the repo secrets
 
 GitHub → the repo → Settings → Secrets and variables → Actions → New repository
-secret, name it exactly **IG_TOKEN**, paste the long-lived token.
+secret, name it exactly **IG_TOKEN**, paste the token.
 
-Optionally add a second secret, **GH_SECRETS_PAT**: a fine-grained personal
-access token for this repository with *Secrets: read and write*. With it, each
-run refreshes the Instagram token and stores the new one, so the 60 days never
-run out. Without it, you re-do step 3 every couple of months.
+A system-user token never expires, so there is nothing to refresh and
+`GH_SECRETS_PAT` is not needed. The script calls the refresh endpoint anyway,
+gets an error, prints "token refresh skipped" and carries on with the token.
 
 Then: Actions → **instagram sync** → Run workflow. First run puts everything up.
 
