@@ -301,15 +301,12 @@ def build_index() -> None:
     recent = COMICS[1:5]
     body = f"""  <section class="hero wrap">
     <div>
-      <p class="kicker">comics and shit</p>
-      <h1>Drawings, comics, and whatever else falls out of my head.</h1>
-      <p class="lede">No schedule, no theme. When something gets finished it goes up here.</p>
+      <h1 class="kicker">comics and shit</h1>
       <div class="hero-actions">
         <a class="btn btn--primary" href="comics.html#{latest[0]}">latest comic →</a>
         <a class="btn" href="pictures.html">look at pictures</a>
       </div>
     </div>
-    <img class="hero-wordmark" src="{url('paulcheenis.png')}" alt="paulcheenis" width="600" height="250">
   </section>
 
 {sketch_strip()}
