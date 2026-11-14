@@ -239,6 +239,63 @@ def tile(pic: tuple) -> str:
 
 
 # ---------------------------------------------------------------- pages
+THUMB_W = 300
+
+
+def ig_thumb(rel: str) -> str:
+    """A strip-sized copy of an instagram image, generated once with Pillow.
+
+    The mirrored posts are camera-sized (a few hundred KB each); a dozen of them
+    on the home page would be several megabytes for something shown at 132 px.
+    """
+    src = ROOT / "Assets" / rel
+    thumbs = ROOT / "Assets" / "thumbs"
+    if not src.exists():
+        return url(rel)
+    out = thumbs / (src.stem + ".jpg")
+    try:
+        if not out.exists() or out.stat().st_mtime < src.stat().st_mtime:
+            from PIL import Image
+            thumbs.mkdir(exist_ok=True)
+            im = Image.open(src).convert("RGB")
+            im.thumbnail((THUMB_W, THUMB_W), getattr(Image, "Resampling", Image).LANCZOS)
+            im.save(out, "JPEG", quality=82, optimize=True)
+        return f"Assets/thumbs/{out.name}"
+    except Exception as exc:                      # noqa: BLE001 - never break the build
+        print(f"  thumb failed for {src.name}: {exc}")
+        return url(rel)
+
+
+def sketch_strip(count: int = 14) -> str:
+    """The auto-scrolling ribbon of the newest instagram sketches.
+
+    The track is duplicated so the CSS can translate by exactly -50% and loop
+    without a visible jump; hover pauses it, and reduced-motion turns it into a
+    plain horizontal scroller.
+    """
+    picks = IG_SKETCHES[:count]
+    if not picks:
+        return ""
+    cells = "".join(
+        f'<a class="strip__cell" href="{esc(p[4]) or "sketch.html"}" '
+        f'{"target=_blank rel=noopener " if p[4] else ""}aria-label="{esc(p[1])}">'
+        f'<img src="{ig_thumb(p[0])}" alt="{esc(p[1])}" loading="lazy" decoding="async"></a>'
+        for p in picks
+    )
+    return f"""  <section class="strip-section wrap">
+    <div class="section-head">
+      <h2>From the sketchbook</h2>
+      <span class="eyebrow">newest from instagram</span>
+      <a class="more" href="sketch.html">all sketches →</a>
+    </div>
+    <div class="strip">
+      <div class="strip__track">{cells}{cells}</div>
+    </div>
+  </section>
+
+"""
+
+
 def build_index() -> None:
     latest = COMICS[0]
     recent = COMICS[1:5]
@@ -255,6 +312,7 @@ def build_index() -> None:
     <img class="hero-wordmark" src="{url('paulcheenis.png')}" alt="paulcheenis" width="600" height="250">
   </section>
 
+{sketch_strip()}
   <section class="section wrap">
     <div class="section-head">
       <h2>Newest</h2>
