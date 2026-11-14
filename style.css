@@ -315,6 +315,57 @@ h3 { font-size: 1.1rem; margin: 0 0 4px; }
   text-underline-offset: 2px;
 }
 
+/* ---------- the auto-scrolling sketch ribbon ---------- */
+
+.strip-section { margin-top: 4px; }
+
+.strip {
+  position: relative;
+  overflow: hidden;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: var(--paper-2);
+  /* fade the ends so cells slide out instead of being clipped hard */
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
+}
+
+.strip__track {
+  display: flex;
+  width: max-content;
+  animation: strip-scroll 48s linear infinite;
+  will-change: transform;
+}
+.strip:hover .strip__track,
+.strip:focus-within .strip__track { animation-play-state: paused; }
+
+.strip__cell {
+  display: block;
+  flex: 0 0 auto;
+  width: 132px;
+  height: 132px;
+  padding: 6px;
+}
+.strip__cell img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;              /* never crop a drawing */
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+.strip__cell:focus-visible { outline: 2px solid var(--ink); outline-offset: -4px; }
+
+@keyframes strip-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }   /* the track holds the cells twice */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .strip { overflow-x: auto; }
+  .strip__track { animation: none; }
+}
+
 /* ---------- prose pages ---------- */
 
 .panel {
