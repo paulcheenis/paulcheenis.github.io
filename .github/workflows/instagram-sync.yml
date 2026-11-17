@@ -23,9 +23,12 @@ jobs:
         with:
           python-version: "3.12"
 
-      # only needed for the optional step that puts a refreshed token back
-      - name: Install PyNaCl
-        run: pip install --disable-pip-version-check pynacl
+      # pynacl is only needed for the optional step that puts a refreshed token back;
+      # pillow is what build_pages.py needs to write the 300 px strip thumbnails. Without
+      # it every new post falls back to a camera-sized original on the home page and the
+      # failure is silent, because ig_thumb() refuses to break the build.
+      - name: Install PyNaCl and Pillow
+        run: pip install --disable-pip-version-check pynacl pillow
 
       - name: Pull new posts, rebuild the pages
         env:
